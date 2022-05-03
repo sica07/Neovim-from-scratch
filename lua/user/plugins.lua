@@ -45,7 +45,22 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
   use "windwp/nvim-autopairs" -- Autopairs, integrates with both cmp and treesitter
-  use "numToStr/Comment.nvim" -- Easily comment stuff
+  use "tpope/vim-unimpaired" -- useful shortcuts
+  use {
+    "tpope/vim-surround",
+    keys = {"c", "d", "y"}
+    -- make sure to change the value of `timeoutlen` if it's not triggering correctly, see https://github.com/tpope/vim-surround/issues/117
+    -- setup = function()
+      --  vim.o.timeoutlen = 500
+    -- end
+  }
+  use "RRethy/vim-illuminate" -- highlight other uses of the word under the cursor
+  use {
+      'numToStr/Comment.nvim',
+      config = function()
+          require('Comment').setup()
+      end
+  }
   use "kyazdani42/nvim-web-devicons"
   use "kyazdani42/nvim-tree.lua"
   use "akinsho/bufferline.nvim"
@@ -55,13 +70,61 @@ return packer.startup(function(use)
   use "ahmedkhalf/project.nvim"
   use "lewis6991/impatient.nvim"
   use "lukas-reineke/indent-blankline.nvim"
-  use "goolord/alpha-nvim"
   use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
   use "folke/which-key.nvim"
+  use "karb94/neoscroll.nvim"
+  use "phaazon/hop.nvim"
+  use "sheerun/vim-polyglot"
+  use "neomake/neomake"
+  use { -- navigate and highlight matching words
+    "andymass/vim-matchup",
+    event = "CursorMoved",
+    config = function()
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    end,
+  }
+  -- DB
+  use "tpope/vim-dadbod"
+  use "kristijanhusak/vim-dadbod-ui"
+  use "kristijanhusak/vim-dadbod-completion"
+  -- vimwiki
+  use 'mattn/calendar-vim'
+  use 'vimwiki/vimwiki'
+  use 'joanrivera/vim-zimwiki-syntax'
+  use 'freitass/todo.txt-vim'
+
+  use 'phpactor/phpactor'
+
+  use { -- search and replace
+    "windwp/nvim-spectre",
+    event = "BufRead",
+    config = function()
+      require("spectre").setup()
+    end,
+  }
+  -- use 'liuchengxu/vista.vim'
 
   -- Colorschemes
   -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
   use "lunarvim/darkplus.nvim"
+  use "kadekillary/skull-vim"
+  use "widatama/vim-phoenix"
+  use "owickstrom/vim-colors-paramount"
+  use "rakr/vim-two-firewatch"
+  use {"dracula/vim",  as= "dracula" }
+  use "chriskempson/vim-tomorrow-theme"
+  use "https://gitlab.com/yorickpeterse/vim-paper.git"
+  use "AlessandroYorba/Alduin"
+  use "NLKNguyen/papercolor-theme"
+  use "fxn/vim-monochrome"
+  use "sainnhe/gruvbox-material"
+  use "sainnhe/everforest"
+  use "mcchrish/zenbones.nvim"
+  use "rktjmp/lush.nvim" --needed by zenbones
+  use "drewtempelmeyer/palenight.vim"
+  use "arcticicestudio/nord-vim"
+  use "joshdick/onedark.vim"
+
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin
@@ -80,6 +143,18 @@ return packer.startup(function(use)
   use "williamboman/nvim-lsp-installer" -- simple to use language server installer
   use "tamago324/nlsp-settings.nvim" -- language server settings defined in json for
   use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
+  use {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function()
+      require "lsp_signature".setup()
+    end
+  }
+  use {
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+  }
+
 
   -- Telescope
   use "nvim-telescope/telescope.nvim"
@@ -89,10 +164,42 @@ return packer.startup(function(use)
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   }
-  use "JoosepAlviste/nvim-ts-context-commentstring"
+  use {
+   "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  }
+  use {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    event = "BufRead",
+  }
 
   -- Git
   use "lewis6991/gitsigns.nvim"
+  use {
+  "folke/zen-mode.nvim",
+  config = function()
+    require("zen-mode").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end
+}
+use {
+  "folke/twilight.nvim",
+  config = function()
+    require("twilight").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end
+}
+
+
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

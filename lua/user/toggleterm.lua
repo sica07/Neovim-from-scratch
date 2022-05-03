@@ -68,3 +68,8 @@ local python = Terminal:new({ cmd = "python", hidden = true })
 function _PYTHON_TOGGLE()
 	python:toggle()
 end
+
+local php = Terminal:new({ cmd = "psysh", hidden = true })
+function _PHP_TOGGLE()
+	php:toggle()
+end
